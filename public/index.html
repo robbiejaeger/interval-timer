@@ -6,9 +6,19 @@
 <body>
   <h1>Interval Timer</h1>
 
+  <section>
+    <label for="main-interval">Main Interval:</label>
+    <input id="main-interval-input" type="number" name="main-interval">
+
+    <label for="num-interval">Number of Intervals:</label>
+    <input id="num-interval-input" type="number" name="num-interval">
+  </section>
+
   <button id="start-timer">Start</button>
+  <p id="intervals-remaining">Intervals Remaining: <span id="num-intervals-remaining"></span></p>
   <p id="time"></p>
 
+  <script type="text/javascript" src="lib/easytimer.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
 </body>
 </html>

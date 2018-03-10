@@ -1,27 +1,53 @@
 (() => {
-  const interval = 5; // seconds
   const startButton = document.getElementById('start-timer');
+  const mainIntervalInput = document.getElementById('main-interval-input');
+  const numIntervalInput = document.getElementById('num-interval-input');
+  const numIntervalDisplay = document.getElementById('num-intervals-remaining');
   const timeDisplay = document.getElementById('time');
+  
+  let mainInterval = 5; // seconds
+  let numInterval = 2;
+  
+  const timer = new Timer();
 
-  const getTimeRemaining = (endTime) => {
-    const timeRemaining = endTime - (new Date()).getTime();
-    return timeRemaining;
+  const setInitialState = () => {
+    mainIntervalInput.value = mainInterval;
+    numIntervalInput.value = numInterval;
+    timeDisplay.innerText = mainInterval;
+    numIntervalDisplay.innerText = numInterval;
+  };
+
+  const updateMainInterval = () => {
+    mainInterval = mainIntervalInput.value;
+    timeDisplay.innerText = mainInterval;
+  };
+
+  const updateNumInterval = () => {
+    numInterval = numIntervalInput.value;
+    numIntervalDisplay.innerText = numInterval;
   };
 
   const startCountdown = () => {
-    const deadline = (new Date()).getTime() + interval*1000;
-    const intervalID = setInterval(() => {
-      let timeRemaining = getTimeRemaining(deadline);
-      let secondsRemaining = Math.floor( (timeRemaining/1000) % 60 );
-      timeDisplay.innerText = secondsRemaining;
+    timer.start({countdown: true, startValues: {seconds: parseInt(mainInterval)}});
 
-      console.log(timeRemaining)
-      if (timeRemaining <= 0) {
-        clearInterval(intervalID);
-      }
-    }, 100);
+    timer.addEventListener('secondsUpdated', (e) => {
+        timeDisplay.innerText = timer.getTimeValues().seconds;
+    });
+
+    timer.addEventListener('targetAchieved', (e) => {
+        timeDisplay.innerText = '0';
+        numInterval--;
+        numIntervalDisplay.innerText = numInterval;
+        if (numInterval > 0) {
+          timer.start({countdown: true, startValues: {seconds: parseInt(mainInterval)}});
+        }
+    });
   };
 
-  timeDisplay.innerText = interval;
+  setInitialState();
   startButton.addEventListener('click', startCountdown);
+  mainIntervalInput.addEventListener('click', updateMainInterval);
+  mainIntervalInput.addEventListener('input', updateMainInterval);
+  numIntervalInput.addEventListener('click', updateNumInterval);
+  numIntervalInput.addEventListener('input', updateNumInterval);
 })();
