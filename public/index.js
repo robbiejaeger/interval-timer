@@ -1,25 +1,25 @@
 (() => {
   const startButton = document.getElementById('start-timer');
-  const mainIntervalInput = document.getElementById('main-interval-input');
+  const mainIntervalDurationInput = document.getElementById('main-interval-input');
   const numIntervalInput = document.getElementById('num-interval-input');
   const numIntervalDisplay = document.getElementById('num-intervals-remaining');
   const timeDisplay = document.getElementById('time');
   
-  let mainInterval = 5; // seconds
+  let mainIntervalDuration = 5; // seconds
   let numInterval = 2;
   
   const timer = new Timer();
 
   const setInitialState = () => {
-    mainIntervalInput.value = mainInterval;
+    mainIntervalDurationInput.value = mainIntervalDuration;
+    timeDisplay.innerText = mainIntervalDuration;
     numIntervalInput.value = numInterval;
-    timeDisplay.innerText = mainInterval;
     numIntervalDisplay.innerText = numInterval;
   };
 
-  const updateMainInterval = () => {
-    mainInterval = mainIntervalInput.value;
-    timeDisplay.innerText = mainInterval;
+  const updateMainIntervalDuration = () => {
+    mainIntervalDuration = mainIntervalDurationInput.value;
+    timeDisplay.innerText = mainIntervalDuration;
   };
 
   const updateNumInterval = () => {
@@ -28,26 +28,28 @@
   };
 
   const startCountdown = () => {
-    timer.start({countdown: true, startValues: {seconds: parseInt(mainInterval)}});
+    timer.start({countdown: true, startValues: {seconds: parseInt(mainIntervalDuration)}});
 
-    timer.addEventListener('secondsUpdated', (e) => {
+    timer.addEventListener('secondsUpdated', () => {
         timeDisplay.innerText = timer.getTimeValues().seconds;
     });
 
-    timer.addEventListener('targetAchieved', (e) => {
-        timeDisplay.innerText = '0';
+    timer.addEventListener('targetAchieved', () => {
         numInterval--;
         numIntervalDisplay.innerText = numInterval;
         if (numInterval > 0) {
-          timer.start({countdown: true, startValues: {seconds: parseInt(mainInterval)}});
+          timer.start({countdown: true, startValues: {seconds: parseInt(mainIntervalDuration)}});
+          timeDisplay.innerText = mainIntervalDuration;
+        } else {
+          timeDisplay.innerText = '0';
         }
     });
   };
 
   setInitialState();
   startButton.addEventListener('click', startCountdown);
-  mainIntervalInput.addEventListener('click', updateMainInterval);
-  mainIntervalInput.addEventListener('input', updateMainInterval);
+  mainIntervalDurationInput.addEventListener('click', updateMainIntervalDuration);
+  mainIntervalDurationInput.addEventListener('input', updateMainIntervalDuration);
   numIntervalInput.addEventListener('click', updateNumInterval);
   numIntervalInput.addEventListener('input', updateNumInterval);
 })();
