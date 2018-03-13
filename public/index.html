@@ -2,27 +2,35 @@
 <html>
 <head>
   <title>Stretch Timer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
   <h1>Stretch Timer</h1>
 
   <section>
-    <label for="main-interval">Stretch Time:</label>
-    <input id="main-interval-input" type="number" name="main-interval">
+    <p>
+      <label for="main-interval">Stretch Time:</label>
+      <input id="main-interval-input" type="number" name="main-interval">
+    </p>
 
-    <label for="sub-interval">Transition Time:</label>
-    <input id="sub-interval-input" type="number" name="sub-interval">
+    <p>
+      <label for="sub-interval">Transition Time:</label>
+      <input id="sub-interval-input" type="number" name="sub-interval">
+    </p>
 
-    <label for="num-interval">Number of Stretches:</label>
-    <input id="num-interval-input" type="number" name="num-interval">
+    <p>
+      <label for="num-interval">Number of Stretches:</label>
+      <input id="num-interval-input" type="number" name="num-interval">
+    </p>
   </section>
 
   <button id="start">Start</button>
   <button id="pause">Pause</button>
   <button id="reset">Reset</button>
 
-  <p id="intervals-remaining">Stretches Remaining: <span id="num-intervals-remaining"></span></p>
   <p id="time"></p>
+  <p id="intervals-remaining">Stretches Remaining: <span id="num-intervals-remaining"></span></p>
 
   <script type="text/javascript" src="lib/easytimer.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
