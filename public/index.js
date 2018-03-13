@@ -3,6 +3,7 @@
   const pauseButton = document.getElementById('pause');
   const resetButton = document.getElementById('reset');
   const mainIntervalDurationInput = document.getElementById('main-interval-input');
+  const subIntervalDurationInput = document.getElementById('sub-interval-input');
   const numIntervalInput = document.getElementById('num-interval-input');
   const numIntervalDisplay = document.getElementById('num-intervals-remaining');
   const timeDisplay = document.getElementById('time');
@@ -17,6 +18,7 @@
 
   const setInitialState = () => {
     mainIntervalDurationInput.value = mainIntervalDuration;
+    subIntervalDurationInput.value = subIntervalDuration;
     timeDisplay.innerText = mainIntervalDuration;
     numIntervalInput.value = numInterval;
     numIntervalDisplay.innerText = numInterval;
@@ -25,6 +27,10 @@
   const updateMainIntervalDuration = () => {
     mainIntervalDuration = mainIntervalDurationInput.value;
     timeDisplay.innerText = mainIntervalDuration;
+  };
+
+  const updateSubIntervalDuration = () => {
+    subIntervalDuration = subIntervalDurationInput.value;
   };
 
   const updateNumInterval = () => {
@@ -79,6 +85,8 @@
   resetButton.addEventListener('click', resetCountdown);
   mainIntervalDurationInput.addEventListener('click', updateMainIntervalDuration);
   mainIntervalDurationInput.addEventListener('input', updateMainIntervalDuration);
+  subIntervalDurationInput.addEventListener('click', updateSubIntervalDuration);
+  subIntervalDurationInput.addEventListener('input', updateSubIntervalDuration);
   numIntervalInput.addEventListener('click', updateNumInterval);
   numIntervalInput.addEventListener('input', updateNumInterval);
 })();
