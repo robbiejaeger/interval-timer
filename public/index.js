@@ -11,7 +11,7 @@
   let mainIntervalDuration = 5; // seconds
   let subIntervalDuration = 2; // seconds
   let numInterval = 2;
-  let intervalCounter = numInterval * 2;
+  let onMainInterval = true;
   let currentCountdownDuration = null;
   
   const timer = new Timer();
@@ -39,13 +39,17 @@
   };
 
   const determineIntervalToUse = () => {
-    if (intervalCounter % 2 === 0) {
+    if (onMainInterval) {
       currentCountdownDuration = mainIntervalDuration;
-      numInterval--;
     } else {
       currentCountdownDuration = subIntervalDuration;
     }
-    intervalCounter--;
+  };
+
+  const decrementInterval = () => {
+    if (onMainInterval) {
+      numInterval--;
+    }
   };
 
   const resetCountdown = () => {
@@ -70,13 +74,15 @@
   });
 
   timer.addEventListener('targetAchieved', () => {
-      numIntervalDisplay.innerText = numInterval;
-      if (numInterval > 0) {
-        startCountdown();
-        timeDisplay.innerText = currentCountdownDuration;
-      } else {
-        timeDisplay.innerText = '0';
-      }
+    onMainInterval ^= true;
+    decrementInterval();
+    numIntervalDisplay.innerText = numInterval;
+    if (numInterval > 0) {
+      startCountdown();
+      timeDisplay.innerText = currentCountdownDuration;
+    } else {
+      timeDisplay.innerText = '0';
+    }
   });
 
   setInitialState();
