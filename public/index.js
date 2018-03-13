@@ -1,5 +1,7 @@
 (() => {
-  const startButton = document.getElementById('start-timer');
+  const startButton = document.getElementById('start');
+  const pauseButton = document.getElementById('pause');
+  const resetButton = document.getElementById('reset');
   const mainIntervalDurationInput = document.getElementById('main-interval-input');
   const numIntervalInput = document.getElementById('num-interval-input');
   const numIntervalDisplay = document.getElementById('num-intervals-remaining');
@@ -27,27 +29,40 @@
     numIntervalDisplay.innerText = numInterval;
   };
 
+  const resetCountdown = () => {
+    timer.stop();
+    numInterval = numIntervalInput.value;
+    numIntervalDisplay.innerText = numInterval;
+    timeDisplay.innerText = mainIntervalDuration;
+  };
+
+  const pauseCountdown = () => {
+    timer.pause();
+  };
+
   const startCountdown = () => {
     timer.start({countdown: true, startValues: {seconds: parseInt(mainIntervalDuration)}});
-
-    timer.addEventListener('secondsUpdated', () => {
-        timeDisplay.innerText = timer.getTimeValues().seconds;
-    });
-
-    timer.addEventListener('targetAchieved', () => {
-        numInterval--;
-        numIntervalDisplay.innerText = numInterval;
-        if (numInterval > 0) {
-          timer.start({countdown: true, startValues: {seconds: parseInt(mainIntervalDuration)}});
-          timeDisplay.innerText = mainIntervalDuration;
-        } else {
-          timeDisplay.innerText = '0';
-        }
-    });
   };
+
+  timer.addEventListener('secondsUpdated', () => {
+      timeDisplay.innerText = timer.getTimeValues().seconds;
+  });
+
+  timer.addEventListener('targetAchieved', () => {
+      numInterval--;
+      numIntervalDisplay.innerText = numInterval;
+      if (numInterval > 0) {
+        timer.start({countdown: true, startValues: {seconds: parseInt(mainIntervalDuration)}});
+        timeDisplay.innerText = mainIntervalDuration;
+      } else {
+        timeDisplay.innerText = '0';
+      }
+  });
 
   setInitialState();
   startButton.addEventListener('click', startCountdown);
+  pauseButton.addEventListener('click', pauseCountdown);
+  resetButton.addEventListener('click', resetCountdown);
   mainIntervalDurationInput.addEventListener('click', updateMainIntervalDuration);
   mainIntervalDurationInput.addEventListener('input', updateMainIntervalDuration);
   numIntervalInput.addEventListener('click', updateNumInterval);
