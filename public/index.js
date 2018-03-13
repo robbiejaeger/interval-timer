@@ -8,7 +8,10 @@
   const timeDisplay = document.getElementById('time');
   
   let mainIntervalDuration = 5; // seconds
+  let subIntervalDuration = 2; // seconds
   let numInterval = 2;
+  let intervalCounter = numInterval * 2;
+  let currentCountdownDuration = null;
   
   const timer = new Timer();
 
@@ -29,11 +32,22 @@
     numIntervalDisplay.innerText = numInterval;
   };
 
+  const determineIntervalToUse = () => {
+    if (intervalCounter % 2 === 0) {
+      currentCountdownDuration = mainIntervalDuration;
+      numInterval--;
+    } else {
+      currentCountdownDuration = subIntervalDuration;
+    }
+    intervalCounter--;
+  };
+
   const resetCountdown = () => {
     timer.stop();
     numInterval = numIntervalInput.value;
     numIntervalDisplay.innerText = numInterval;
     timeDisplay.innerText = mainIntervalDuration;
+    intervalCounter = numIntervalInput.value * 2;
   };
 
   const pauseCountdown = () => {
@@ -41,19 +55,19 @@
   };
 
   const startCountdown = () => {
-    timer.start({countdown: true, startValues: {seconds: parseInt(mainIntervalDuration)}});
+    determineIntervalToUse();
+    timer.start({countdown: true, startValues: {seconds: parseInt(currentCountdownDuration)}});
   };
 
   timer.addEventListener('secondsUpdated', () => {
-      timeDisplay.innerText = timer.getTimeValues().seconds;
+    timeDisplay.innerText = timer.getTimeValues().seconds;
   });
 
   timer.addEventListener('targetAchieved', () => {
-      numInterval--;
       numIntervalDisplay.innerText = numInterval;
       if (numInterval > 0) {
-        timer.start({countdown: true, startValues: {seconds: parseInt(mainIntervalDuration)}});
-        timeDisplay.innerText = mainIntervalDuration;
+        startCountdown();
+        timeDisplay.innerText = currentCountdownDuration;
       } else {
         timeDisplay.innerText = '0';
       }
